@@ -12,9 +12,11 @@
   },
   "dependencies": {
     "@apollo/experimental-nextjs-app-support": "0.0.0-commit-5141fa5",
+    "@redwoodjs/auth-supabase-web": "7.0.0-canary.762+04e097b37",
     "@redwoodjs/forms": "7.0.0-canary.762",
     "@redwoodjs/router": "7.0.0-canary.762",
     "@redwoodjs/web": "7.0.0-canary.762",
+    "@supabase/supabase-js": "^2",
     "humanize-string": "2.1.0",
     "prop-types": "15.8.1",
     "react": "0.0.0-experimental-e5205658f-20230913",
