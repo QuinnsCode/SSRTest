@@ -21,7 +21,7 @@ const Auth = () => {
   }
 
   return (
-    <div className="row flex-center flex rounded-2xl border-2 border-solid border-black px-2">
+    <div className="row flex-center flex rounded-2xl border-2 border-solid border-black px-2 shadow-sm shadow-orange-300">
       <div className="col-6 form-widget border-2 border-solid border-gray-500 ">
         {/* <h1 className="header">Supabase + RedwoodJS</h1> */}
         <p className="description">
