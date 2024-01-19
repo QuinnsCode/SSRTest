@@ -12,6 +12,8 @@ const HomePage = () => {
       <Metadata title="Home" description="Home page" />
 
       <div>
+        Home
+        <hr />
         <Lobby />
         <>{!isAuthenticated ? <Auth /> : <Account />}</>
       </div>
