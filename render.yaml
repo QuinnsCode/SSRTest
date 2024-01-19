@@ -21,10 +21,12 @@ services:
     # ```
     # destination: https://my-redwood-project-api.onrender.com/*
     # ```
+    # destination: https://whateverYourApiUrlIs.onrender.com/*
+
     destination: https://ssrtest-api.onrender.com/*
   - type: rewrite
     source: /*
-    destination: /index.html
+    destination: /200.html
 
 - name: SSRTest-api
   type: web
