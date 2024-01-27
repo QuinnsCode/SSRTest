@@ -77,47 +77,61 @@ const Account = () => {
 
   return (
     <div className="row flex-center flex">
-      <div className="col-6 form-widget">
+      <div className="col-6 form-widget mx-1 rounded-xl border-2 border-slate-900 shadow-sm shadow-gray-400">
         <h1 className="header">Supabase + RedwoodJS</h1>
-        <p className="description">Your profile</p>
-        <div className="form-widget">
-          <div>
-            <label htmlFor="email">Email</label>
-            <input id="email" type="text" value={currentUser.email} disabled />
+        <div className="form-widget mx-2">
+          <div className="rw-button pointer-events-none my-0.5 inline-flex w-full bg-black text-white">
+            <label className="inline-flex" htmlFor="email">
+              Email:
+            </label>
+            <hr />
+            <input
+              id="email"
+              type="text"
+              value={currentUser.email}
+              disabled
+              className="mx-2 inline-flex px-2 hover:overflow-visible"
+            />
           </div>
-          <div>
+          <div className="rw-button my-0.5">
             <label htmlFor="username">Name</label>
             <input
               id="username"
               type="text"
               value={username || ''}
               onChange={(e) => setUsername(e.target.value)}
+              className="mx-2 px-2 hover:overflow-visible hover:text-black"
             />
           </div>
-          <div>
+          <div className="rw-button my-0.5 ">
             <label htmlFor="website">Website</label>
             <input
               id="website"
               type="url"
               value={website || ''}
               onChange={(e) => setWebsite(e.target.value)}
+              className="mx-2 px-2"
             />
           </div>
 
-          <div>
-            <button
-              className="button primary block"
-              onClick={() => updateProfile({ username, website, avatar_url })}
-              disabled={loading}
-            >
-              {loading ? 'Loading ...' : 'Update'}
-            </button>
-          </div>
-
-          <div>
-            <button className="button block" onClick={() => logOut()}>
-              Sign Out
-            </button>
+          <div className="flex w-full">
+            <div className="rw-button m-1 rounded-lg ">
+              <button
+                className="button primary block"
+                onClick={() => updateProfile({ username, website, avatar_url })}
+                disabled={loading}
+              >
+                {loading ? 'Loading ...' : 'Update'}
+              </button>
+            </div>
+            <div className=" m-1 flex w-full flex-row-reverse rounded-xl px-1 ">
+              <button
+                className="button rw-button flex-row-reverse rounded-lg bg-black text-white "
+                onClick={() => logOut()}
+              >
+                Sign Out
+              </button>
+            </div>
           </div>
         </div>
       </div>
