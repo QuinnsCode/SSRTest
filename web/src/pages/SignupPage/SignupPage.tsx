@@ -1,4 +1,4 @@
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
 import { useEffect } from 'react'
 
 import {
@@ -11,51 +11,106 @@ import {
 } from '@redwoodjs/forms'
 import { Link, navigate, routes } from '@redwoodjs/router'
 import { Metadata } from '@redwoodjs/web'
-import { toast, Toaster } from '@redwoodjs/web/toast'
 
+import { useToast } from 'src/contexts/ToastProvider'
 import { useAuth } from 'src/auth'
 
 const SignupPage = () => {
-  const { isAuthenticated, signUp } = useAuth()
+  const {
+    client: supabase,
+    isAuthenticated,
+    signUp,
+    logIn
+  } = useAuth()
+
+  const { showToast, hideToast } = useToast();
+  const usernameRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    usernameRef.current?.focus();
+  }, []);
 
   useEffect(() => {
     if (isAuthenticated) {
-      navigate(routes.home())
-    }
-  }, [isAuthenticated])
+      if (isWaitingForEmailConfirmation) {
+        showToast('Successfully logged in!');
+      }
+      if (!isWaitingForEmailConfirmation) {
+        showToast('Found Account!');
+      }
 
-  // focus on username box on page load
-  const usernameRef = useRef<HTMLInputElement>(null)
-  useEffect(() => {
-    usernameRef.current?.focus()
-  }, [])
+
+      // Optionally, hide the toast after a delay
+      const timeout = setTimeout(() => {
+        hideToast();
+      }, 5000);
+
+      // Optional: Navigate after a delay
+      setTimeout(() => {
+        navigate(routes.home());
+      }, 100);
+
+      return () => {
+        clearTimeout(timeout);
+        hideToast();
+      };
+
+    }
+  }, [isAuthenticated]);
 
   const onSubmit = async (data: Record<string, string>) => {
-    const response = await signUp({
+    // console.log(data.username, data.password, { data })
+    try {
+      const response = await logIn({
       email: data.username,
       password: data.password,
-    })
+      authMethod: 'password',
+      })
+      if (response.data) {
+        // toast(JSON.stringify(response.data))
+        if (response.data.user === null) {
+          // toast.error('Invalid Login! 2')
+        } else if (response.data.user) {
+          // toast.error(JSON.stringify(response))
 
-    if (response.message) {
-      toast(response.message)
-    } else if (response.error) {
-      toast.error(response.error)
-    } else if (response.data) {
-        toast.error('RESPONSE_DATA_ERROR_1' + JSON.stringify(response.data))
-        toast.error(response.data.user.email)
-    } else {
-      // user is signed in automatically
-      toast.success('Welcome!')
-      setTimeout(()=>{navigate(routes.home())},5000)
+
+          // console.log(response.data)
+        } else {
+          // toast.error('Invalid Login!')
+          console.log(response.data)
+        }
+      } else if (response.error) {
+        // toast.error(JSON.stringify(response.error))
+      } else {
+        // toast.success('Welcome back!')
+      }
+    } catch (e) {
+      console.log('1error')
     }
+    try {
+      const response = await signUp({
+        email: data.username,
+        password: data.password,
+      })
+      setIsWaitingForEmailConfirmation(true)
+    }catch (e) {
+      console.log("error2")
+    }
+
+
+
   }
+
+  const [isWaitingForEmailConfirmation, setIsWaitingForEmailConfirmation] = useState(false)
 
   return (
     <>
       <Metadata title="Signup" />
 
       <main className="rw-main">
-        <Toaster toastOptions={{ className: 'rw-toast', duration: 6000 }} />
+
+
+
         <div className="rw-scaffold rw-login-container">
           <div className="rw-segment">
             <header className="rw-segment-header">
@@ -113,9 +168,11 @@ const SignupPage = () => {
                     </Submit>
                   </div>
                 </Form>
+
               </div>
             </div>
           </div>
+          <div className='w-full flex items-center justify-center text-center'>{isWaitingForEmailConfirmation ? <div className='fixed -translate-y-4/5 rw-button bg-black hover:bg-slate-800 text-white font-normal normal-case animate-pulse transform duration-[3000ms] text-center items-center flex transition-transform'>Email sent, Confirm email to continue</div> :null}</div>
           <div className="rw-login-link">
             <span>Already have an account?</span>{' '}
             <Link to={routes.login()} className="rw-link">
