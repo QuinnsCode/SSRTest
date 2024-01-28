@@ -13,7 +13,7 @@ const HomePage = () => {
 
       <div>
         Home
-        {/* <hr /> */}
+        <hr />
         <Lobby />
         <>{!isAuthenticated ? <Auth /> : <Account />}</>
       </div>
