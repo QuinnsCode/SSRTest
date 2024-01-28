@@ -14,6 +14,7 @@ import { Metadata } from '@redwoodjs/web'
 
 import { useToast } from 'src/contexts/ToastProvider'
 import { useAuth } from 'src/auth'
+import { toast } from '@redwoodjs/web/dist/toast'
 
 const SignupPage = () => {
   const {
@@ -26,6 +27,8 @@ const SignupPage = () => {
   const { showToast, hideToast } = useToast();
   const usernameRef = useRef<HTMLInputElement>(null);
 
+  const [isWaitingForEmailConfirmation, setIsWaitingForEmailConfirmation] = useState(false)
+
   useEffect(() => {
     usernameRef.current?.focus();
   }, []);
@@ -34,9 +37,15 @@ const SignupPage = () => {
     if (isAuthenticated) {
       if (isWaitingForEmailConfirmation) {
         showToast('Successfully logged in!');
+        setTimeout(() => {
+          navigate(routes.home());
+        }, 100);
       }
       if (!isWaitingForEmailConfirmation) {
         showToast('Found Account!');
+        setTimeout(() => {
+          navigate(routes.home());
+        }, 100);
       }
 
 
@@ -48,7 +57,7 @@ const SignupPage = () => {
       // Optional: Navigate after a delay
       setTimeout(() => {
         navigate(routes.home());
-      }, 100);
+      }, 2000);
 
       return () => {
         clearTimeout(timeout);
@@ -56,7 +65,7 @@ const SignupPage = () => {
       };
 
     }
-  }, [isAuthenticated]);
+  }, [isAuthenticated, isWaitingForEmailConfirmation]);
 
   const onSubmit = async (data: Record<string, string>) => {
     // console.log(data.username, data.password, { data })
@@ -67,41 +76,41 @@ const SignupPage = () => {
       authMethod: 'password',
       })
       if (response.data) {
-        // toast(JSON.stringify(response.data))
-        if (response.data.user === null) {
-          // toast.error('Invalid Login! 2')
-        } else if (response.data.user) {
-          // toast.error(JSON.stringify(response))
 
-
-          // console.log(response.data)
+        if (response.data.user) {
+          showToast("Found account!")
+          navigate(routes.home())
         } else {
-          // toast.error('Invalid Login!')
-          console.log(response.data)
+          try {
+            const response = await signUp({
+              email: data.username,
+              password: data.password,
+            })
+            setIsWaitingForEmailConfirmation(true)
+          } catch (e) {
+            console.log("error2")
+          }
         }
-      } else if (response.error) {
-        // toast.error(JSON.stringify(response.error))
       } else {
-        // toast.success('Welcome back!')
+        try {
+          const response = await signUp({
+            email: data.username,
+            password: data.password,
+          })
+          setIsWaitingForEmailConfirmation(true)
+        } catch (e) {
+          console.log("error3")
+        }
       }
     } catch (e) {
-      console.log('1error')
+      console.log('error1')
     }
-    try {
-      const response = await signUp({
-        email: data.username,
-        password: data.password,
-      })
-      setIsWaitingForEmailConfirmation(true)
-    }catch (e) {
-      console.log("error2")
-    }
+
 
 
 
   }
 
-  const [isWaitingForEmailConfirmation, setIsWaitingForEmailConfirmation] = useState(false)
 
   return (
     <>

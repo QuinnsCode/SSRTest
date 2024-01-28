@@ -21,6 +21,8 @@ const Account = () => {
         data: { user },
       } = await supabase.auth.getUser()
 
+      console.log(user)
+
       const { data, error, status } = await supabase
         .from('profiles')
         .select(`username, website, avatar_url`)
@@ -81,7 +83,7 @@ const Account = () => {
         <h1 className="header">Supabase + RedwoodJS</h1>
         <div className="form-widget mx-2">
           <div className="rw-button pointer-events-none my-0.5 inline-flex w-full bg-black text-white">
-            <label className="inline-flex" htmlFor="email">
+            <label className="inline-flex w-20" htmlFor="email">
               Email:
             </label>
             <hr />
@@ -94,7 +96,7 @@ const Account = () => {
             />
           </div>
           <div className="rw-button my-0.5 text-black">
-            <label htmlFor="username" className=' hover:text-white '>Name</label>
+            <label htmlFor="username" className='w-20 hover:text-white '>Name</label>
             <input
               id="username"
               type="text"
@@ -104,7 +106,7 @@ const Account = () => {
             />
           </div>
           <div className="rw-button my-0.5 text-black">
-            <label htmlFor="website" className=' hover:text-white '>Website</label>
+            <label htmlFor="website" className='w-20 hover:text-white '>Website</label>
             <input
               id="website"
               type="url"

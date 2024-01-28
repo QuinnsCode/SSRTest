@@ -24,10 +24,10 @@ const Auth = () => {
     <div className="row flex-center flex">
       <div className="col-6 form-widget border-2 border-solid border-gray-500 ">
         {/* <h1 className="header">Supabase + RedwoodJS</h1> */}
-        <p className="description">
+        <p className="description px-2">
           Sign in via magic link with your email below
         </p>
-        <div>
+        <div className="px-2">
           <input
             className="inputField border-2 border-solid border-gray-500"
             type="email"
@@ -36,13 +36,13 @@ const Auth = () => {
             onChange={(e) => setEmail(e.target.value)}
           />
         </div>
-        <div>
+        <div className="px-2">
           <button
             onClick={(e) => {
               e.preventDefault()
               handleLogin(email)
             }}
-            className={'button block'}
+            className="rw-button rounded-lg border-2 border-solid border-white bg-black text-white hover:bg-gradient-to-br hover:from-slate-500 hover:via-gray-800 hover:to-gray-400 hover:text-white"
             disabled={loading}
           >
             {loading ? <span>Loading</span> : <span>Send magic link</span>}
