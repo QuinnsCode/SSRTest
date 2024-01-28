@@ -7,8 +7,8 @@
     ]
   },
   "devDependencies": {
-    "@redwoodjs/auth-supabase-setup": "7.0.0-canary.762",
-    "@redwoodjs/core": "7.0.0-canary.762",
+    "@redwoodjs/auth-supabase-setup": "7.0.0-canary.886",
+    "@redwoodjs/core": "7.0.0-canary.886",
     "prettier-plugin-tailwindcss": "0.4.1"
   },
   "eslintConfig": {
