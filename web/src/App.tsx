@@ -7,6 +7,7 @@ import Routes from 'src/Routes'
 
 import { AuthProvider, useAuth } from './auth'
 
+import {ToastProvider} from 'src/contexts/ToastProvider'
 import './scaffold.css'
 import './index.css'
 
@@ -15,7 +16,9 @@ const App = () => (
     <RedwoodProvider titleTemplate="%PageTitle | %AppTitle">
       <AuthProvider>
         <RedwoodApolloProvider useAuth={useAuth}>
-          <Routes />
+          <ToastProvider>
+            <Routes />
+          </ToastProvider>
         </RedwoodApolloProvider>
       </AuthProvider>
     </RedwoodProvider>

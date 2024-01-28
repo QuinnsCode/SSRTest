@@ -88,7 +88,7 @@ const Account = () => {
             <input
               id="email"
               type="text"
-              value={currentUser.email}
+              value={currentUser.email as string}
               disabled
               className="mx-2 inline-flex px-2 hover:overflow-visible"
             />

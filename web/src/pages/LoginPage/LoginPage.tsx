@@ -1,6 +1,6 @@
 import { useRef } from 'react'
 import { useEffect } from 'react'
-
+import { useToast } from 'src/contexts/ToastProvider';
 import {
   Form,
   Label,
@@ -11,7 +11,7 @@ import {
 } from '@redwoodjs/forms'
 import { Link, navigate, routes } from '@redwoodjs/router'
 import { Metadata } from '@redwoodjs/web'
-import { toast, Toaster } from '@redwoodjs/web/toast'
+// import { Toaster } from '@redwoodjs/web/toast'
 
 import { useAuth } from 'src/auth'
 
@@ -24,19 +24,56 @@ const LoginPage = () => {
     logIn,
   } = useAuth()
 
+  const { showToast, hideToast } = useToast();
+  const usernameRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    usernameRef.current?.focus();
+  }, []);
+
   useEffect(() => {
     if (isAuthenticated) {
-      navigate(routes.home())
-    }
-  }, [isAuthenticated])
+      showToast('Successfully logged in!');
 
-  const usernameRef = useRef<HTMLInputElement>(null)
-  useEffect(() => {
-    usernameRef.current?.focus()
-  }, [])
+      // Optionally, hide the toast after a delay
+      const timeout = setTimeout(() => {
+        hideToast();
+      }, 5000);
+
+      // Optional: Navigate after a delay
+      setTimeout(() => {
+        navigate(routes.home());
+      }, 200);
+
+      return () => {
+        clearTimeout(timeout);
+        hideToast();
+      };
+
+    }
+  }, [isAuthenticated]);
+
+  // const usernameRef = useRef<HTMLInputElement>(null)
+  // useEffect(() => {
+  //   usernameRef.current?.focus()
+  // }, [])
+
+  // useEffect(() => {
+
+  //   if (isAuthenticated) {
+  //     // showToast("Input1")
+  //     // setTimeout(()=>{toast.dismiss()},200)
+  //     // setTimeout(()=>{toast.success("Loading Account!")},300)
+  //     setTimeout(()=>navigate(routes.home()),2000)
+
+  //   }
+  // }, [isAuthenticated])
+
+
+
 
   const onSubmit = async (data: Record<string, string>) => {
-    console.log(data.username, data.password, { data })
+    // console.log(data.username, data.password, { data })
 
     const response = await logIn({
       email: data.username,
@@ -45,12 +82,22 @@ const LoginPage = () => {
     })
 
     if (response.data) {
-      toast(JSON.stringify(response.data))
-      console.log(response.data)
+      // toast(JSON.stringify(response.data))
+      if (response.data.user === null) {
+        // toast.error('Invalid Login! 2')
+      } else if (response.data.user) {
+        // toast.error(JSON.stringify(response))
+
+
+        // console.log(response.data)
+      } else {
+        // toast.error('Invalid Login!')
+        console.log(response.data)
+      }
     } else if (response.error) {
-      toast.error(JSON.stringify(response.error))
+      // toast.error(JSON.stringify(response.error))
     } else {
-      toast.success('Welcome back!')
+      // toast.success('Welcome back!')
     }
   }
 
@@ -59,7 +106,7 @@ const LoginPage = () => {
       <Metadata title="Login" />
 
       <main className="rw-main">
-        <Toaster toastOptions={{ className: 'rw-toast', duration: 6000 }} />
+
         <div className="rw-scaffold rw-login-container">
           <div className="rw-segment">
             <header className="rw-segment-header">
