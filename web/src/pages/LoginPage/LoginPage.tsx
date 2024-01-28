@@ -33,6 +33,7 @@ const LoginPage = () => {
 
   useEffect(() => {
     if (isAuthenticated) {
+      console.log(supabase)
       showToast('Successfully logged in!');
 
       // Optionally, hide the toast after a delay
