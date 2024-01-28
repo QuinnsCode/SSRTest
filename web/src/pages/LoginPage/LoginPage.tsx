@@ -79,10 +79,6 @@ const LoginPage = () => {
         showToast('Logged in!')
         navigate(routes.home())
       }
-    } else if (response.error) {
-      // toast.error(JSON.stringify(response.error))
-    } else {
-      // toast.success('Welcome back!')
     }
   }
 

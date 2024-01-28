@@ -2,12 +2,12 @@ import { FatalErrorBoundary, RedwoodProvider } from '@redwoodjs/web'
 // import { RedwoodApolloProvider } from '@redwoodjs/web/apollo'
 import { RedwoodApolloProvider } from '@redwoodjs/web/dist/apollo/suspense'
 
+import { ToastProvider } from 'src/contexts/ToastProvider'
 import FatalErrorPage from 'src/pages/FatalErrorPage/FatalErrorPage'
 import Routes from 'src/Routes'
 
 import { AuthProvider, useAuth } from './auth'
 
-import {ToastProvider} from 'src/contexts/ToastProvider'
 import './scaffold.css'
 import './index.css'
 
