@@ -43,7 +43,7 @@ const LoginPage = () => {
       // Optional: Navigate after a delay
       setTimeout(() => {
         navigate(routes.home());
-      }, 200);
+      }, 100);
 
       return () => {
         clearTimeout(timeout);

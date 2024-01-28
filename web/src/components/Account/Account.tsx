@@ -93,24 +93,24 @@ const Account = () => {
               className="mx-2 inline-flex px-2 hover:overflow-visible"
             />
           </div>
-          <div className="rw-button my-0.5">
-            <label htmlFor="username">Name</label>
+          <div className="rw-button my-0.5 text-black">
+            <label htmlFor="username" className=' hover:text-white '>Name</label>
             <input
               id="username"
               type="text"
               value={username || ''}
               onChange={(e) => setUsername(e.target.value)}
-              className="mx-2 px-2 hover:overflow-visible hover:text-black"
+              className="mx-2 px-2 text-slate-800 hover:text-black"
             />
           </div>
-          <div className="rw-button my-0.5 ">
-            <label htmlFor="website">Website</label>
+          <div className="rw-button my-0.5 text-black">
+            <label htmlFor="website" className=' hover:text-white '>Website</label>
             <input
               id="website"
               type="url"
               value={website || ''}
               onChange={(e) => setWebsite(e.target.value)}
-              className="mx-2 px-2"
+              className="mx-2 px-2 text-slate-800 hover:text-black"
             />
           </div>
 

@@ -16,7 +16,7 @@ const ToastProvider = ({ children }) => {
 
   return (
     <ToastContext.Provider value={{ showToast, hideToast }}>
-      <Toaster toastOptions={{ className: 'rw-toast', duration: 600 }} />
+      <Toaster toastOptions={{ className: 'rw-toast', duration: 1500 }} />
     {toastMessage && <div className="toast hidden">{toast.success(toastMessage)}</div>}
       {children}
     </ToastContext.Provider>
