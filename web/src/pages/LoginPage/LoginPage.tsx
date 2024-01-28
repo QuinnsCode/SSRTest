@@ -1,6 +1,6 @@
 import { useRef } from 'react'
 import { useEffect } from 'react'
-import { useToast } from 'src/contexts/ToastProvider';
+
 import {
   Form,
   Label,
@@ -14,45 +14,39 @@ import { Metadata } from '@redwoodjs/web'
 // import { Toaster } from '@redwoodjs/web/toast'
 
 import { useAuth } from 'src/auth'
+import { useToast } from 'src/contexts/ToastProvider'
 
 const LoginPage = () => {
-  const {
-    client: supabase,
-    currentUser,
-    logOut,
-    isAuthenticated,
-    logIn,
-  } = useAuth()
+  const { client: supabase, isAuthenticated, logIn } = useAuth()
 
-  const { showToast, hideToast } = useToast();
-  const usernameRef = useRef<HTMLInputElement>(null);
+  const { showToast, hideToast } = useToast()
+  const usernameRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
-    usernameRef.current?.focus();
-  }, []);
+    usernameRef.current?.focus()
+  }, [])
 
   useEffect(() => {
     if (isAuthenticated) {
       console.log(supabase)
-      showToast('Successfully logged in!');
+      showToast('Successfully logged in!')
 
       // Optionally, hide the toast after a delay
       const timeout = setTimeout(() => {
-        hideToast();
-      }, 5000);
+        hideToast()
+      }, 5000)
 
       // Optional: Navigate after a delay
       setTimeout(() => {
-        navigate(routes.home());
-      }, 100);
+        navigate(routes.home())
+      }, 100)
 
       return () => {
-        clearTimeout(timeout);
-        hideToast();
-      };
-
+        clearTimeout(timeout)
+        hideToast()
+      }
     }
-  }, [isAuthenticated]);
+  }, [isAuthenticated])
 
   // const usernameRef = useRef<HTMLInputElement>(null)
   // useEffect(() => {
@@ -70,9 +64,6 @@ const LoginPage = () => {
   //   }
   // }, [isAuthenticated])
 
-
-
-
   const onSubmit = async (data: Record<string, string>) => {
     // console.log(data.username, data.password, { data })
 
@@ -84,16 +75,9 @@ const LoginPage = () => {
 
     if (response.data) {
       // toast(JSON.stringify(response.data))
-      if (response.data.user === null) {
-        // toast.error('Invalid Login! 2')
-      } else if (response.data.user) {
-        // toast.error(JSON.stringify(response))
-
-
-        // console.log(response.data)
-      } else {
-        // toast.error('Invalid Login!')
-        console.log(response.data)
+      if (response.data.user) {
+        showToast('Logged in!')
+        navigate(routes.home())
       }
     } else if (response.error) {
       // toast.error(JSON.stringify(response.error))
@@ -107,7 +91,6 @@ const LoginPage = () => {
       <Metadata title="Login" />
 
       <main className="rw-main">
-
         <div className="rw-scaffold rw-login-container">
           <div className="rw-segment">
             <header className="rw-segment-header">
