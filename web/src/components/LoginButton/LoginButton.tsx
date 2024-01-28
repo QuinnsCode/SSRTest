@@ -4,13 +4,7 @@ import { toast } from '@redwoodjs/web/dist/toast'
 import { useAuth } from 'src/auth'
 
 const LoginButton = () => {
-  const {
-    client: supabase,
-    currentUser,
-    logOut,
-    isAuthenticated,
-    logIn,
-  } = useAuth()
+  const { client: supabase, logOut, isAuthenticated } = useAuth()
 
   const logOutUser = async () => {
     await logOut()

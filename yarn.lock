@@ -4448,7 +4448,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@redwoodjs/auth-supabase-api@npm:7.0.0-canary.886":
+"@redwoodjs/auth-supabase-api@npm:7.0.0-canary.886+12a400a5f":
   version: 7.0.0-canary.886
   resolution: "@redwoodjs/auth-supabase-api@npm:7.0.0-canary.886"
   dependencies:
@@ -4470,7 +4470,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@redwoodjs/auth-supabase-web@npm:7.0.0-canary.886":
+"@redwoodjs/auth-supabase-web@npm:7.0.0-canary.886+12a400a5f":
   version: 7.0.0-canary.886
   resolution: "@redwoodjs/auth-supabase-web@npm:7.0.0-canary.886"
   dependencies:
@@ -7133,7 +7133,7 @@ __metadata:
   resolution: "api@workspace:api"
   dependencies:
     "@redwoodjs/api": "npm:7.0.0-canary.886"
-    "@redwoodjs/auth-supabase-api": "npm:7.0.0-canary.886"
+    "@redwoodjs/auth-supabase-api": "npm:7.0.0-canary.886+12a400a5f"
     "@redwoodjs/graphql-server": "npm:7.0.0-canary.886"
   languageName: unknown
   linkType: soft
@@ -20989,7 +20989,7 @@ __metadata:
   resolution: "web@workspace:web"
   dependencies:
     "@apollo/experimental-nextjs-app-support": "npm:0.0.0-commit-5141fa5"
-    "@redwoodjs/auth-supabase-web": "npm:7.0.0-canary.886"
+    "@redwoodjs/auth-supabase-web": "npm:7.0.0-canary.886+12a400a5f"
     "@redwoodjs/forms": "npm:7.0.0-canary.886"
     "@redwoodjs/router": "npm:7.0.0-canary.886"
     "@redwoodjs/vite": "npm:7.0.0-canary.886"

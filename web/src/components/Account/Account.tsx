@@ -16,12 +16,11 @@ const Account = () => {
   async function getProfile() {
     try {
       setLoading(true)
-      console.log(supabase.auth)
       const {
         data: { user },
       } = await supabase.auth.getUser()
 
-      console.log(user)
+      console.log({user})
 
       const { data, error, status } = await supabase
         .from('profiles')
@@ -60,10 +59,8 @@ const Account = () => {
         avatar_url,
         updated_at: new Date(),
       }
-
-      const { error } = await supabase.from('profiles').upsert(updates, {
-        returning: 'minimal', // Don't return the value after inserting
-      })
+ // Don't return the value after inserting
+      const { error } = await supabase.from('profiles').upsert(updates, {})
 
       if (error) {
         throw error

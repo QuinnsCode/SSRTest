@@ -78,6 +78,7 @@ const SignupPage = () => {
       if (response.data) {
 
         if (response.data.user) {
+          console.log({response})
           showToast("Found account!")
           navigate(routes.home())
         } else {

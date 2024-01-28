@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "@redwoodjs/api": "7.0.0-canary.886",
-    "@redwoodjs/auth-supabase-api": "7.0.0-canary.886",
+    "@redwoodjs/auth-supabase-api": "7.0.0-canary.886+12a400a5f",
     "@redwoodjs/graphql-server": "7.0.0-canary.886"
   }
 }
