@@ -78,9 +78,9 @@ const SignupPage = () => {
       if (response.data) {
 
         if (response.data.user) {
-          console.log({response})
+          console.log(response.data.user)
           showToast("Found account!")
-          navigate(routes.home())
+          // navigate(routes.home())
         } else {
           try {
             const response = await signUp({
