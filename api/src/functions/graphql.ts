@@ -18,6 +18,7 @@ export const handler = createGraphQLHandler({
   services,
   cors: {
     origin: 'https://ssrtest-web-server.onrender.com/',
+    credentials: true,
   },
   onException: () => {
     // Disconnect from your database with an unhandled exception.
