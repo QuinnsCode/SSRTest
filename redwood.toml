@@ -10,7 +10,6 @@
   title = "Redwood App"
   port = 8910
   apiUrl = "https://ssrtest-api.onrender.com"
-  apiGraphqlEndpoint = "https://ssrtest-api.onrender.com"
   includeEnvironmentVariables = ["SUPABASE_URL","SUPABASE_KEY"]
 [api]
   port = 8911
