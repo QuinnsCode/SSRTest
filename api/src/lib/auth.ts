@@ -34,6 +34,7 @@ export const getCurrentUser = async (
   /* eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars */
   { event, context }
 ): Promise<RedwoodUser> => {
+  console.log(JSON.stringify(decoded))
   if (!decoded) {
     return null
   }
@@ -54,7 +55,8 @@ export const getCurrentUser = async (
  */
 export const isAuthenticated = (): boolean => {
   // return !!context.currentUser
-  return true
+  // return true
+  return !!context.currentUser
 }
 
 /**

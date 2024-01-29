@@ -1,17 +1,26 @@
 import { useState, useEffect } from 'react'
 
+import { navigate } from '@redwoodjs/router'
+import { routes } from '@redwoodjs/router'
+
 import { useAuth } from 'src/auth'
+import { useAuthId } from 'src/contexts/AuthIdProvider'
 
 const Account = () => {
-  const { client: supabase, currentUser, logOut } = useAuth()
+  const { client: supabase, currentUser, logOut, isAuthenticated } = useAuth()
   const [loading, setLoading] = useState(true)
   const [username, setUsername] = useState(null)
   const [website, setWebsite] = useState(null)
   const [avatar_url, setAvatarUrl] = useState(null)
+  const { token, deleteID } = useAuthId()
 
   useEffect(() => {
+    alert('1')
     getProfile()
   }, [supabase.auth.session])
+  useEffect(() => {
+    alert('session')
+  }, [isAuthenticated])
 
   async function getProfile() {
     try {
@@ -20,7 +29,7 @@ const Account = () => {
         data: { user },
       } = await supabase.auth.getUser()
 
-      console.log({user})
+      console.log({ user })
 
       const { data, error, status } = await supabase
         .from('profiles')
@@ -33,9 +42,9 @@ const Account = () => {
       }
 
       if (data) {
-        setUsername(data.username)
-        setWebsite(data.website)
-        setAvatarUrl(data.avatar_url)
+        setUsername(data?.username)
+        setWebsite(data?.website)
+        setAvatarUrl(data?.avatar_url)
       }
     } catch (error) {
       alert(error.message)
@@ -47,7 +56,7 @@ const Account = () => {
   async function updateProfile({ username, website, avatar_url }) {
     try {
       setLoading(true)
-      console.log({ currentUser })
+      // console.log({ currentUser })
       const {
         data: { user },
       } = await supabase.auth.getUser()
@@ -59,7 +68,7 @@ const Account = () => {
         avatar_url,
         updated_at: new Date(),
       }
- // Don't return the value after inserting
+      // Don't return the value after inserting
       const { error } = await supabase.from('profiles').upsert(updates, {})
 
       if (error) {
@@ -87,13 +96,15 @@ const Account = () => {
             <input
               id="email"
               type="text"
-              value={currentUser.email as string}
+              value={currentUser?.email as string}
               disabled
               className="mx-2 inline-flex px-2 hover:overflow-visible"
             />
           </div>
           <div className="rw-button my-0.5 text-black">
-            <label htmlFor="username" className='w-20 hover:text-white '>Name</label>
+            <label htmlFor="username" className="w-20 hover:text-white ">
+              Name
+            </label>
             <input
               id="username"
               type="text"
@@ -103,7 +114,9 @@ const Account = () => {
             />
           </div>
           <div className="rw-button my-0.5 text-black">
-            <label htmlFor="website" className='w-20 hover:text-white '>Website</label>
+            <label htmlFor="website" className="w-20 hover:text-white ">
+              Website
+            </label>
             <input
               id="website"
               type="url"
@@ -117,7 +130,9 @@ const Account = () => {
             <div className="rw-button m-1 rounded-lg ">
               <button
                 className="button primary block"
-                onClick={() => updateProfile({ username, website, avatar_url })}
+                onClick={async () =>
+                  await updateProfile({ username, website, avatar_url })
+                }
                 disabled={loading}
               >
                 {loading ? 'Loading ...' : 'Update'}
@@ -126,7 +141,11 @@ const Account = () => {
             <div className=" m-1 flex w-full flex-row-reverse rounded-xl px-1 ">
               <button
                 className="button rw-button flex-row-reverse rounded-lg bg-black text-white "
-                onClick={() => logOut()}
+                onClick={async () => {
+                  deleteID()
+                  // navigate(routes.home())
+                  logOut()
+                }}
               >
                 Sign Out
               </button>

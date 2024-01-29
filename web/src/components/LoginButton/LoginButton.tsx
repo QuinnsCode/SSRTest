@@ -1,13 +1,15 @@
 import { navigate, routes } from '@redwoodjs/router'
-import { toast } from '@redwoodjs/web/dist/toast'
 
 import { useAuth } from 'src/auth'
+import { useAuthId } from 'src/contexts/AuthIdProvider'
 
 const LoginButton = () => {
   const { client: supabase, logOut, isAuthenticated } = useAuth()
 
+  const { deleteID, hasID, token } = useAuthId()
+
   const logOutUser = async () => {
-    await logOut()
+    logOut().then(await deleteID())
   }
 
   const goToLoginPage = async () => {
@@ -27,8 +29,9 @@ const LoginButton = () => {
         </button>
       ) : (
         <button
-          onClick={() => {
-            goToLoginPage()
+          onClick={async (e) => {
+            e.preventDefault()
+            await goToLoginPage()
           }}
           className="rw-button rounded-2xl border-2 border-white bg-black px-2 py-1 text-white hover:bg-gray-800 hover:text-white"
         >

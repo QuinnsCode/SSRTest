@@ -14,11 +14,12 @@ import { Metadata } from '@redwoodjs/web'
 // import { Toaster } from '@redwoodjs/web/toast'
 
 import { useAuth } from 'src/auth'
+import { useAuthId } from 'src/contexts/AuthIdProvider'
 import { useToast } from 'src/contexts/ToastProvider'
 
 const LoginPage = () => {
-  const { client: supabase, isAuthenticated, logIn } = useAuth()
-
+  const { client: supabase, isAuthenticated, currentUser, logIn } = useAuth()
+  const { hasID, updateId, token } = useAuthId()
   const { showToast, hideToast } = useToast()
   const usernameRef = useRef<HTMLInputElement>(null)
 
@@ -27,9 +28,12 @@ const LoginPage = () => {
   }, [])
 
   useEffect(() => {
-    if (isAuthenticated) {
+    if (hasID) {
+      alert(hasID)
       console.log(supabase)
-      showToast('Successfully logged in!')
+      console.log(token)
+      console.log(currentUser)
+      showToast('Successfully logged in 1!')
 
       // Optionally, hide the toast after a delay
       const timeout = setTimeout(() => {
@@ -46,7 +50,7 @@ const LoginPage = () => {
         hideToast()
       }
     }
-  }, [isAuthenticated])
+  }, [hasID])
 
   // const usernameRef = useRef<HTMLInputElement>(null)
   // useEffect(() => {
@@ -76,7 +80,9 @@ const LoginPage = () => {
     if (response.data) {
       // toast(JSON.stringify(response.data))
       if (response.data.user) {
+        console.log(response.data.user)
         showToast('Logged in!')
+        updateId(response.data.user)
         navigate(routes.home())
       }
     }

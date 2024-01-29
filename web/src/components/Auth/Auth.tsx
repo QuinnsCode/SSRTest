@@ -8,6 +8,7 @@ const Auth = () => {
   const [email, setEmail] = useState('')
 
   const handleLogin = async (email) => {
+    alert('this')
     try {
       setLoading(true)
       const { error } = await logIn({ email, authMethod: 'otp' })

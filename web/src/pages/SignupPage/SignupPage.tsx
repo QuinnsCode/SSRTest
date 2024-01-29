@@ -11,75 +11,68 @@ import {
 } from '@redwoodjs/forms'
 import { Link, navigate, routes } from '@redwoodjs/router'
 import { Metadata } from '@redwoodjs/web'
-
-import { useToast } from 'src/contexts/ToastProvider'
-import { useAuth } from 'src/auth'
 import { toast } from '@redwoodjs/web/dist/toast'
 
+import { useAuth } from 'src/auth'
+import { useToast } from 'src/contexts/ToastProvider'
+
 const SignupPage = () => {
-  const {
-    client: supabase,
-    isAuthenticated,
-    signUp,
-    logIn
-  } = useAuth()
+  const { client: supabase, isAuthenticated, signUp, logIn } = useAuth()
 
-  const { showToast, hideToast } = useToast();
-  const usernameRef = useRef<HTMLInputElement>(null);
+  const { showToast, hideToast } = useToast()
+  const usernameRef = useRef<HTMLInputElement>(null)
 
-  const [isWaitingForEmailConfirmation, setIsWaitingForEmailConfirmation] = useState(false)
+  const [isWaitingForEmailConfirmation, setIsWaitingForEmailConfirmation] =
+    useState(false)
 
   useEffect(() => {
-    usernameRef.current?.focus();
-  }, []);
+    usernameRef.current?.focus()
+  }, [])
 
   useEffect(() => {
     if (isAuthenticated) {
       if (isWaitingForEmailConfirmation) {
-        showToast('Successfully logged in!');
+        showToast('Successfully logged in 2!')
         setTimeout(() => {
-          navigate(routes.home());
-        }, 100);
+          navigate(routes.home())
+        }, 100)
       }
       if (!isWaitingForEmailConfirmation) {
-        showToast('Found Account!');
+        showToast('Found Account!')
         setTimeout(() => {
-          navigate(routes.home());
-        }, 100);
+          navigate(routes.home())
+        }, 100)
       }
-
 
       // Optionally, hide the toast after a delay
       const timeout = setTimeout(() => {
-        hideToast();
-      }, 5000);
+        hideToast()
+      }, 5000)
 
       // Optional: Navigate after a delay
       setTimeout(() => {
-        navigate(routes.home());
-      }, 2000);
+        navigate(routes.home())
+      }, 2000)
 
       return () => {
-        clearTimeout(timeout);
-        hideToast();
-      };
-
+        clearTimeout(timeout)
+        hideToast()
+      }
     }
-  }, [isAuthenticated, isWaitingForEmailConfirmation]);
+  }, [isAuthenticated, isWaitingForEmailConfirmation])
 
   const onSubmit = async (data: Record<string, string>) => {
     // console.log(data.username, data.password, { data })
     try {
       const response = await logIn({
-      email: data.username,
-      password: data.password,
-      authMethod: 'password',
+        email: data.username,
+        password: data.password,
+        authMethod: 'password',
       })
       if (response.data) {
-
         if (response.data.user) {
           console.log(response.data.user)
-          showToast("Found account!")
+          showToast('Found account!')
           navigate(routes.home())
         } else {
           try {
@@ -89,7 +82,7 @@ const SignupPage = () => {
             })
             setIsWaitingForEmailConfirmation(true)
           } catch (e) {
-            console.log("error2")
+            console.log('error2')
           }
         }
       } else {
@@ -100,27 +93,19 @@ const SignupPage = () => {
           })
           setIsWaitingForEmailConfirmation(true)
         } catch (e) {
-          console.log("error3")
+          console.log('error3')
         }
       }
     } catch (e) {
       console.log('error1')
     }
-
-
-
-
   }
-
 
   return (
     <>
       <Metadata title="Signup" />
 
       <main className="rw-main">
-
-
-
         <div className="rw-scaffold rw-login-container">
           <div className="rw-segment">
             <header className="rw-segment-header">
@@ -178,11 +163,16 @@ const SignupPage = () => {
                     </Submit>
                   </div>
                 </Form>
-
               </div>
             </div>
           </div>
-          <div className='w-full flex items-center justify-center text-center'>{isWaitingForEmailConfirmation ? <div className='fixed -translate-y-4/5 rw-button bg-black hover:bg-slate-800 text-white font-normal normal-case animate-pulse transform duration-[3000ms] text-center items-center flex transition-transform'>Email sent, Confirm email to continue</div> :null}</div>
+          <div className="flex w-full items-center justify-center text-center">
+            {isWaitingForEmailConfirmation ? (
+              <div className="-translate-y-4/5 rw-button fixed flex transform animate-pulse items-center bg-black text-center font-normal normal-case text-white transition-transform duration-[3000ms] hover:bg-slate-800">
+                Email sent, Confirm email to continue
+              </div>
+            ) : null}
+          </div>
           <div className="rw-login-link">
             <span>Already have an account?</span>{' '}
             <Link to={routes.login()} className="rw-link">
