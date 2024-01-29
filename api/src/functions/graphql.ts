@@ -17,7 +17,7 @@ export const handler = createGraphQLHandler({
   sdls,
   services,
   cors: {
-    origin: 'https://ssrtest-web-server.onrender.com/',
+    origin: 'https://ssrtest-web-server.onrender.com',
     credentials: true,
   },
   onException: () => {
