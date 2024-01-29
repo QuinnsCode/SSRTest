@@ -4,11 +4,13 @@
 #
 # For the full list of options, see the "App Configuration: redwood.toml" doc:
 # https://redwoodjs.com/docs/app-configuration-redwood-toml
+# apiUrl = "/.redwood/functions"
 
 [web]
   title = "Redwood App"
   port = 8910
   apiUrl = "/.redwood/functions"
+  apiGraphqlEndpoint = "https://ssrtest-api.onrender.com/graphql"
   includeEnvironmentVariables = ["SUPABASE_URL","SUPABASE_KEY"]
 [api]
   port = 8911

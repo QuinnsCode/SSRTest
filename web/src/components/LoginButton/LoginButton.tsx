@@ -8,7 +8,6 @@ const LoginButton = () => {
 
   const { deleteID, hasID, token } = useAuthId()
 
-  console.log({ currentUser })
   const logOutUser = async () => {
     logOut().then(await deleteID())
   }

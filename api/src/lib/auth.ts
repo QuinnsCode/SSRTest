@@ -39,7 +39,7 @@ export const getCurrentUser = async (
   }
 
   const { roles } = parseJWT({ decoded })
-
+  console.log(JSON.stringify(decoded))
   if (roles) {
     return { ...decoded, roles }
   }
@@ -55,7 +55,7 @@ export const getCurrentUser = async (
 export const isAuthenticated = (): boolean => {
   // return !!context.currentUser
   // return true
-  console.log('isAuthenticated function')
+  console.warn('isAuthenticated function')
   return !!context.currentUser
 }
 

@@ -30,6 +30,7 @@ export default async () => {
       //
       data.map(async (data: Prisma.UserExampleCreateArgs['data']) => {
         const record = await db.userExample.create({ data })
+        console.log(record)
       })
     )
 
