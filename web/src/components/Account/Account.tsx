@@ -12,15 +12,13 @@ const Account = () => {
   const [username, setUsername] = useState(null)
   const [website, setWebsite] = useState(null)
   const [avatar_url, setAvatarUrl] = useState(null)
-  const { token, deleteID } = useAuthId()
+  const { deleteID } = useAuthId()
 
   useEffect(() => {
-    alert('1')
     getProfile()
   }, [supabase.auth.session])
-  useEffect(() => {
-    alert('session')
-  }, [isAuthenticated])
+
+  useEffect(() => {}, [isAuthenticated])
 
   async function getProfile() {
     try {
@@ -127,7 +125,7 @@ const Account = () => {
           </div>
 
           <div className="flex w-full">
-            <div className="rw-button m-1 rounded-lg ">
+            <div className="rw-button m-1 w-36 rounded-lg ">
               <button
                 className="button primary block"
                 onClick={async () =>

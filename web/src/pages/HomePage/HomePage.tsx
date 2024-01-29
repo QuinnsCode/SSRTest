@@ -4,11 +4,12 @@ import { useAuth } from 'src/auth'
 import Account from 'src/components/Account/Account'
 import Auth from 'src/components/Auth/Auth'
 import Lobby from 'src/components/Lobby/Lobby'
-import { useAuthId } from 'src/contexts/AuthIdProvider'
+// import { useAuthId } from 'src/contexts/AuthIdProvider'
 
 const HomePage = () => {
-  const { isAuthenticated, getCurrentUser } = useAuth()
-  const { hasID } = useAuthId()
+  const { isAuthenticated } = useAuth()
+  // console.log(supabase.session)
+  // const { hasID } = useAuthId()
   return (
     <>
       <Metadata title="Home" description="Home page" />

@@ -4,10 +4,11 @@ import { useAuth } from 'src/auth'
 import { useAuthId } from 'src/contexts/AuthIdProvider'
 
 const LoginButton = () => {
-  const { client: supabase, logOut, isAuthenticated } = useAuth()
+  const { client: supabase, logOut, isAuthenticated, currentUser } = useAuth()
 
   const { deleteID, hasID, token } = useAuthId()
 
+  console.log({ currentUser })
   const logOutUser = async () => {
     logOut().then(await deleteID())
   }

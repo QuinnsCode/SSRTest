@@ -1,5 +1,5 @@
 // toast-provider.js
-import React, { createContext, useContext, useState } from 'react'
+import React, { createContext, useEffect, useContext, useState } from 'react'
 
 import { toast, Toaster } from '@redwoodjs/web/dist/toast'
 const ToastContext = createContext()
@@ -15,12 +15,17 @@ const ToastProvider = ({ children }) => {
     setToastMessage('')
   }
 
+  useEffect(() => {
+    // Set the initial message after the initial render on the client side
+    setToastMessage('')
+  }, [])
+
   return (
     <ToastContext.Provider value={{ showToast, hideToast }}>
       <Toaster toastOptions={{ className: 'rw-toast', duration: 1500 }} />
-      {toastMessage && (
+      {toastMessage ? (
         <div className="toast hidden">{toast.success(toastMessage)}</div>
-      )}
+      ) : null}
       {children}
     </ToastContext.Provider>
   )
