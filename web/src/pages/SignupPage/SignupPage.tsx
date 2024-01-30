@@ -32,13 +32,13 @@ const SignupPage = () => {
   useEffect(() => {
     if (isAuthenticated) {
       if (isWaitingForEmailConfirmation) {
-        showToast('Successfully logged in 2!')
+        showToast('Successfully logged in 2!', 'success')
         setTimeout(() => {
           navigate(routes.home())
         }, 100)
       }
       if (!isWaitingForEmailConfirmation) {
-        showToast('Found Account!')
+        showToast('Found Account!', 'success')
         setTimeout(() => {
           navigate(routes.home())
         }, 100)
@@ -71,7 +71,7 @@ const SignupPage = () => {
       })
       if (response.data) {
         if (response.data.user) {
-          showToast('Found account!')
+          showToast('Found account!', 'success')
           navigate(routes.home())
         } else {
           try {

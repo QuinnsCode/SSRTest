@@ -1,7 +1,17 @@
-import { useEffect, useRef, useCallback } from 'react'
+import { useRef, useCallback } from 'react'
 
-const useAbortController = (promise, timeoutMs) => {
+import { useToast } from 'src/contexts/ToastProvider'
+class TimeoutError extends Error {
+  constructor(message = 'Timeout exceeded') {
+    super(message)
+    this.name = 'TimeoutError'
+  }
+}
+
+const useAbortController = () => {
   const timeoutRef = useRef(null)
+
+  const { showToast } = useToast()
 
   const clearTimer = useCallback(() => {
     if (timeoutRef.current) {
@@ -10,36 +20,38 @@ const useAbortController = (promise, timeoutMs) => {
     }
   }, [])
 
-  useEffect(() => {
-    const abortController = new AbortController()
+  const createAbortablePromise = (promise, timeoutMs) => {
+    return new Promise((resolve, reject) => {
+      const abortController = new AbortController()
 
-    const timeoutPromise = new Promise((_, reject) => {
-      timeoutRef.current = setTimeout(() => {
-        reject(new Error('Timeout exceeded'))
-      }, timeoutMs)
+      const timeoutPromise = new Promise((_, reject) => {
+        timeoutRef.current = setTimeout(() => {
+          showToast('So sorry, try your task again!', 'error')
+          reject(new TimeoutError())
+        }, timeoutMs)
+      })
+
+      Promise.race([promise, timeoutPromise])
+        .then((result) => {
+          clearTimer()
+          resolve(result)
+        })
+        .catch((error) => {
+          clearTimer()
+          if (error instanceof TimeoutError) {
+            showToast('So sorry, try your task again!', 'error')
+            reject(error)
+          }
+        })
+
+      return () => {
+        abortController.abort()
+        clearTimer()
+      }
     })
+  }
 
-    Promise.race([promise, timeoutPromise])
-      .then((result) => {
-        clearTimer()
-        return result
-      })
-      .catch((error) => {
-        clearTimer()
-        if (error.name !== 'AbortError') {
-          alert('error of promise')
-          throw error
-        }
-      })
-
-    return () => {
-      abortController.abort()
-      clearTimer()
-      alert('cleanup')
-    }
-  }, [promise, clearTimer, timeoutMs])
-
-  return { promise }
+  return { createAbortablePromise }
 }
 
 export default useAbortController

@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 
 import { useAuth } from 'src/auth'
 import { useAuthId } from 'src/contexts/AuthIdProvider'
+import useAbortController from 'src/hooks/useAbortController'
 
 const Account = () => {
   const { client: supabase, currentUser, logOut, isAuthenticated } = useAuth()

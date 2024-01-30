@@ -5,26 +5,43 @@ import { toast, Toaster } from '@redwoodjs/web/dist/toast'
 const ToastContext = createContext()
 
 const ToastProvider = ({ children }) => {
-  const [toastMessage, setToastMessage] = useState('')
+  const [toastMessageAndType, setToastMessageAndType] = useState({})
 
-  const showToast = (message) => {
-    setToastMessage(message)
+  const showToast = (message, type) => {
+    setToastMessageAndType({ message, type })
   }
 
   const hideToast = () => {
-    setToastMessage('')
+    setToastMessageAndType({ message: '', type: '' })
   }
 
   useEffect(() => {
     // Set the initial message after the initial render on the client side
-    setToastMessage('')
+    setToastMessageAndType({ message: '', type: '' })
   }, [])
 
   return (
     <ToastContext.Provider value={{ showToast, hideToast }}>
       <Toaster toastOptions={{ className: 'rw-toast', duration: 1500 }} />
-      {toastMessage ? (
-        <div className="toast hidden">{toast.success(toastMessage)}</div>
+      {toastMessageAndType?.message ? (
+        <>
+          {toastMessageAndType?.type === 'success' ? (
+            <div className="toast hidden">
+              {toast.success(toastMessageAndType?.message)}
+            </div>
+          ) : null}
+          {toastMessageAndType?.type === 'error' ? (
+            <div className="toast hidden">
+              {toast.error(toastMessageAndType?.message)}
+            </div>
+          ) : null}
+          {toastMessageAndType?.type !== 'success' &&
+          toastMessageAndType?.type !== 'error' ? (
+            <div className="toast hidden">
+              {toast(toastMessageAndType?.message)}
+            </div>
+          ) : null}
+        </>
       ) : null}
       {children}
     </ToastContext.Provider>

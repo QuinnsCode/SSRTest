@@ -129,18 +129,6 @@ const HomePage = () => {
       <Metadata name="twitter:description" content={longContent} />
       <Metadata name="twitter:image" content={twitterImageUrl} />
 
-      {/* <Metadata
-        title={website}
-        description={longContent}
-        robots="noindex,nofollow"
-        og={{ image: ogImageUrl }}
-        twitter={{
-          card: 'summary',
-          site: shortWebsite,
-          creator: '@Frown360Turn',
-        }}
-      /> */}
-
       <div className="w-full">
         <div className="rw-button font-2xl w-full bg-black px-12 text-center tracking-widest text-white hover:bg-black hover:text-white">
           Home

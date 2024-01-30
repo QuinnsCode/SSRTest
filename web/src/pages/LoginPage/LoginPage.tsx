@@ -16,13 +16,15 @@ import { Metadata } from '@redwoodjs/web'
 import { useAuth } from 'src/auth'
 import { useAuthId } from 'src/contexts/AuthIdProvider'
 import { useToast } from 'src/contexts/ToastProvider'
-import { jsonDisplay } from 'src/lib/formatters'
+import useAbortController from 'src/hooks/useAbortController'
 
 const LoginPage = () => {
   const { client: supabase, isAuthenticated, currentUser, logIn } = useAuth()
   const { updateID } = useAuthId()
   const { showToast } = useToast()
   const usernameRef = useRef<HTMLInputElement>(null)
+
+  const { createAbortablePromise } = useAbortController()
 
   useEffect(() => {
     usernameRef.current?.focus()
@@ -42,20 +44,27 @@ const LoginPage = () => {
   const onSubmit = async (data: Record<string, string>) => {
     // console.log(data.username, data.password, { data })
 
-    const response = await logIn({
-      email: data.username,
-      password: data.password,
-      authMethod: 'password',
-    })
+    // const response = await logIn({
+    //   email: data.username,
+    //   password: data.password,
+    //   authMethod: 'password',
+    // })
 
-    if (response.data) {
-      if (response.data.user) {
-        const updateId = response.data.user
-        // alert(JSON.stringify(updateId))
-        showToast('Logged in!')
-        updateID(updateId)
-        navigate(routes.home())
-      }
+    const loginResponse = await createAbortablePromise(
+      logIn({
+        email: data.username,
+        password: data.password,
+        authMethod: 'password',
+      }),
+      3000
+    )
+    const { user, session } = loginResponse.data
+
+    if (user) {
+      // alert(JSON.stringify(updateId))
+      showToast('Logged in!', 'success')
+      updateID(user)
+      navigate(routes.home())
     }
   }
 
