@@ -26,7 +26,7 @@ const useAbortController = () => {
 
       const timeoutPromise = new Promise((_, reject) => {
         timeoutRef.current = setTimeout(() => {
-          showToast('So sorry, try your task again!', 'error')
+          showToast('Task timed out! Please try again', 'error')
           reject(new TimeoutError())
         }, timeoutMs)
       })
@@ -39,7 +39,7 @@ const useAbortController = () => {
         .catch((error) => {
           clearTimer()
           if (error instanceof TimeoutError) {
-            showToast('So sorry, try your task again!', 'error')
+            showToast('Task timed out! Please try again', 'error')
             reject(error)
           }
         })
