@@ -30,7 +30,14 @@ services:
         fromDatabase:
           name: SSRTest-db
           property: connectionString
-
+  - type: redis
+    name: redis1
+    #ipAllowList: [] # only allow internal connections
+    plan: free # optional (defaults to starter)
+    maxmemoryPolicy: allkeys-lfu # optional (defaults to allkeys-lru). Rails recommends allkeys-lfu as a default.
+    ipAllowList:
+    - source: 0.0.0.0/0 #I wasn't able to get this work using just the internal connection
+      description: public
 databases:
   - name: SSRTest-db
     region: oregon

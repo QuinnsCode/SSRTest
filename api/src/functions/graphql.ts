@@ -28,13 +28,13 @@ export const handler = createGraphQLHandler({
     // this here needs to be added for the redis cache
     useResponseCache({
       cache: createRedisCache({ redis }),
-      ttl: 0, // 1 minute
+      ttl: 0,
       includeExtensionMetadata: true,
       ttlPerSchemaCoordinate: {
-        // there's more ways to control this but here's my first stab at it
-        'Query.PublicFeeds': 1000 * 60 * 5, // 5 minutes in ms
-        'Query.searchPublicItems': 1000 * 60 * 5, // 5 minute in ms
+        'Query.PublicFeeds': 1000 * 60 * 5,
+        'Query.searchPublicItems': 1000 * 60 * 5,
       },
+      session: null,
     }),
   ],
   onException: () => {
