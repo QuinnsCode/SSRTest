@@ -1,122 +1,125 @@
 # README
 
-Welcome to [RedwoodJS](https://redwoodjs.com)!
+This is my demo to get Supabase Auth (for now maybe more features like realtime) setup with RedwoodJS (using Typescript) serverfully deployed to Render to take advantage of React streaming features.
 
-> **Prerequisites**
->
-> - Redwood requires [Node.js](https://nodejs.org/en/) (=18.x) and [Yarn](https://yarnpkg.com/) (>=1.15)
-> - Are you on Windows? For best results, follow our [Windows development setup](https://redwoodjs.com/docs/how-to/windows-development-setup) guide
+I current am using nvm to change around, but the main things are yarn and node versions
+I have this with yarn 4 and node 20 (specially as of Jan 2024 I have yarn 4.0.2 and node 20.10.0)
 
-Start by installing dependencies:
-
+To recreate this I did:
 ```
-yarn install
+yarn -v //check yarn version and installation
 ```
-
-Then start the development server:
-
+Redwood is currently v6.6 so let's create the app:
 ```
-yarn redwood dev
+yarn create redwood-app use-you-own-darn-name
 ```
-
-Your browser should automatically open to [http://localhost:8910](http://localhost:8910) where you'll see the Welcome Page, which links out to many great resources.
-
-> **The Redwood CLI**
->
-> Congratulations on running your first Redwood CLI command! From dev to deploy, the CLI is with you the whole way. And there's quite a few commands at your disposal:
->
-> ```
-> yarn redwood --help
-> ```
->
-> For all the details, see the [CLI reference](https://redwoodjs.com/docs/cli-commands).
-
-## Prisma and the database
-
-Redwood wouldn't be a full-stack framework without a database. It all starts with the schema. Open the [`schema.prisma`](api/db/schema.prisma) file in `api/db` and replace the `UserExample` model with the following `Post` model:
-
-```prisma
-model Post {
-  id        Int      @id @default(autoincrement())
-  title     String
-  body      String
-  createdAt DateTime @default(now())
-}
+For now SSR is experimental so ugrade to v7.x (I used 7.0.0-canary.886+12a400a5f as of Jan 2024):
+```
+yarn rw upgrade -t canary
+```
+Then setup project for streaming:
+```
+yarn rw exp setup-streaming-ssr
 ```
 
-Redwood uses [Prisma](https://www.prisma.io/), a next-gen Node.js and TypeScript ORM, to talk to the database. Prisma's schema offers a declarative way of defining your app's data models. And Prisma [Migrate](https://www.prisma.io/migrate) uses that schema to make database migrations hassle-free:
 
+~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+
+I am using this as a jumping off point for generating user management:
+https://supabase.com/docs/guides/getting-started/tutorials/with-redwoodjs
+
+You will need Supabase for this as well:
+https://supabase.com/
+
+
+It's using the Supabase client so Schema and Prisma parts are a little stripped down and I am using the supabase cli for schema updates
+
+supabase -v to check you have it otherwise:
+https://supabase.com/docs/guides/cli/getting-started
+
+AND
+
+https://supabase.com/docs/guides/cli/local-development#link-your-project
+
+
+~this means you just probably shouldn't run yarn rw prisma migrate dev go through the Docs on the supabase client but it'll be:
 ```
-yarn rw prisma migrate dev
-
-# ...
-
-? Enter a name for the new migration: › create posts
-```
-
-> `rw` is short for `redwood`
-
-You'll be prompted for the name of your migration. `create posts` will do.
-
-Now let's generate everything we need to perform all the CRUD (Create, Retrieve, Update, Delete) actions on our `Post` model:
-
-```
-yarn redwood generate scaffold post
-```
-
-Navigate to [http://localhost:8910/posts/new](http://localhost:8910/posts/new), fill in the title and body, and click "Save".
-
-Did we just create a post in the database? Yup! With `yarn rw generate scaffold <model>`, Redwood created all the pages, components, and services necessary to perform all CRUD actions on our posts table.
-
-## Frontend first with Storybook
-
-Don't know what your data models look like? That's more than ok—Redwood integrates Storybook so that you can work on design without worrying about data. Mockup, build, and verify your React components, even in complete isolation from the backend:
-
-```
-yarn rw storybook
+supabase db pull  //as well as
+supabase db push
+yarn rw prisma db pull
+yarn rw prisma db push
 ```
 
-Seeing "Couldn't find any stories"? That's because you need a `*.stories.{tsx,jsx}` file. The Redwood CLI makes getting one easy enough—try generating a [Cell](https://redwoodjs.com/docs/cells), Redwood's data-fetching abstraction:
+In your dashboard click on your project, go to the Authentication section, click URL configuration.
+Add your web side's URL to Site's URL section
 
+~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+
+Setup your supabase Auth within Redwood
 ```
-yarn rw generate cell examplePosts
+yarn rw setup auth supabase
 ```
-
-The Storybook server should hot reload and now you'll have four stories to work with. They'll probably look a little bland since there's no styling. See if the Redwood CLI's `setup ui` command has your favorite styling library:
-
+Then I use Redwood to make the make the page:
 ```
-yarn rw setup ui --help
-```
-
-## Testing with Jest
-
-It'd be hard to scale from side project to startup without a few tests. Redwood fully integrates Jest with both the front- and back-ends, and makes it easy to keep your whole app covered by generating test files with all your components and services:
-
-```
-yarn rw test
+yarn rw g dbAuth
 ```
 
-To make the integration even more seamless, Redwood augments Jest with database [scenarios](https://redwoodjs.com/docs/testing#scenarios)  and [GraphQL mocking](https://redwoodjs.com/docs/testing#mocking-graphql-calls).
+I used the Supabase client docs as well as the Redwood Authentication Supabase docs to write the glue code for the pages.
 
-## Ship it
+~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
-Redwood is designed for both serverless deploy targets like Netlify and Vercel and serverful deploy targets like Render and AWS:
-
+And then I got Tailwind setup to style it up some
 ```
-yarn rw setup deploy --help
+yarn rw setup ui tailwindcss
 ```
+~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
-Don't go live without auth! Lock down your app with Redwood's built-in, database-backed authentication system ([dbAuth](https://redwoodjs.com/docs/authentication#self-hosted-auth-installation-and-setup)), or integrate with nearly a dozen third-party auth providers:
+Now onto DEPLOYMENT
 
+Render deployment with SSR means you are:
+~running a Web - Web Service that is NodeJS
+~ and running an Api - Web Service that is also NodeJS
+Web Service is what Render is calling it but means you are running a server on the web and running a server on the backend for API
+
+I needed to use a bigger memory instance to serve the web side.
+The render.yaml is setup with plan:standard because of this
+The render.yaml also included the deploy command as for the web side as:
 ```
-yarn rw setup auth --help
+yarn rw serve web
 ```
+or
+```
+yarn rw serve api
+``` for the api side
 
-## Next Steps
+Use that instead of the defaults so do not use yarn rw deploy render pr follow the normal Docs
 
-The best way to learn Redwood is by going through the comprehensive [tutorial](https://redwoodjs.com/docs/tutorial/foreword) and joining the community (via the [Discourse forum](https://community.redwoodjs.com) or the [Discord server](https://discord.gg/redwoodjs)).
+In redwood.toml update the apiUrl to be what your api side url will be in render
+At the time of writing it is the {PROJECT_SERVICE_NAME}.onrender.com
 
-## Quick Links
+The API side and Web side will end up on different servers so CORS will need to be solved.
+~App.tsx has our RedwoodApolloProvider that will need it's graphQLClientConfig edited to pass through credentials
+~graphql.ts will need updating in api/src/functions as well to add a cors object with two properties a credentials: true as well as origin: 'YOUR_RENDER_WEB_SIDE_URL'
 
-- Stay updated: read [Forum announcements](https://community.redwoodjs.com/c/announcements/5), follow us on [Twitter](https://twitter.com/redwoodjs), and subscribe to the [newsletter](https://redwoodjs.com/newsletter)
-- [Learn how to contribute](https://redwoodjs.com/docs/contributing)
+Some Render flags I have maybe needed are specifying node version multiple ways:
+in an .nvrmc file included, an environment variable NODE_VERSION
+
+~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+
+I made use of Render Environment Variable Groups for overlapping env's
+
+Extra Environment variables for web side:
+RWJS_EXP_SSR_GRAPHQL_ENDPOINT=true
+SKIP_INSTALL_DEPS
+
+Extra Environment variables for api side:
+RWJS_EXP_SSR_GRAPHQL_ENDPOINT=true
+SKIP_INSTALL_DEPS=true
+PRISMA_GENERATE_SKIP_AUTOINSTALL=true
+PRISMA_MIGRATE_SKIP_GENERATE=true
+
+I am not fully sure whether I need all of these still
+
+~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+
+Otherwise I have added a Toast Provider to make Toast notifications last between page navigations. The hook is in web/src/contexts with a provider wrapper in App.tsx which can be called by importing the context and using useToast with startToast and hideToast
