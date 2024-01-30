@@ -15,8 +15,10 @@ import { toast } from '@redwoodjs/web/dist/toast'
 
 import { useAuth } from 'src/auth'
 import { useToast } from 'src/contexts/ToastProvider'
+import useAbortController from 'src/hooks/useAbortController'
 
 const SignupPage = () => {
+  const { createAbortablePromise } = useAbortController()
   const { client: supabase, isAuthenticated, signUp, logIn } = useAuth()
 
   const { showToast, hideToast } = useToast()

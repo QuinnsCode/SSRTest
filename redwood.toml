@@ -9,7 +9,7 @@
 [web]
   title = "Redwood App"
   port = 8910
-  apiUrl = "/.redwood/functions"
+  apiUrl = "https://ssrtest-api.onrender.com"
   includeEnvironmentVariables = ["PROJECT_WEBSITE","SHORT_PROJECT_WEBSITE","SUPABASE_URL","SUPABASE_KEY"]
 [api]
   port = 8911
