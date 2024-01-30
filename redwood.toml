@@ -4,8 +4,8 @@
 #
 # For the full list of options, see the "App Configuration: redwood.toml" doc:
 # https://redwoodjs.com/docs/app-configuration-redwood-toml
-# apiUrl = "/.redwood/functions"
-
+# USE THIS FOR LOCAL DEV apiUrl = "/.redwood/functions"
+# USE THIS FOR RENDER apiUrl = "https://ssrtest-api.onrender.com"
 [web]
   title = "Redwood App"
   port = 8910

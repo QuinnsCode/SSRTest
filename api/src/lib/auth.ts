@@ -39,7 +39,6 @@ export const getCurrentUser = async (
   }
 
   const { roles } = parseJWT({ decoded })
-  console.log(JSON.stringify(decoded))
   if (roles) {
     return { ...decoded, roles }
   }

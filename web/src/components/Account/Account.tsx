@@ -84,7 +84,7 @@ const Account = () => {
   return (
     <div className="row flex-center flex">
       <div className="col-6 form-widget mx-1 rounded-xl border-2 border-slate-900 shadow-sm shadow-gray-400">
-        <h1 className="header">Supabase + RedwoodJS</h1>
+        <div className="header text-center">Supabase + RedwoodJS</div>
         <div className="form-widget mx-2">
           <div className="rw-button pointer-events-none my-0.5 inline-flex w-full bg-black text-white">
             <label className="inline-flex w-20" htmlFor="email">
