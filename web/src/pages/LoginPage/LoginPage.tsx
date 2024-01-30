@@ -58,7 +58,10 @@ const LoginPage = () => {
       }),
       3000
     )
-    const { user, session } = loginResponse.data
+
+    const user = loginResponse.data.user
+
+    console.log('Hi there', { loginResponse })
 
     if (user) {
       // alert(JSON.stringify(updateId))
