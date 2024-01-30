@@ -19,7 +19,7 @@ services:
 
   - name: SSRTest-web-server
     type: web
-    plan: free
+    plan: standard
     env: node
     region: oregon
     buildCommand: corepack enable && yarn install && yarn rw build web
