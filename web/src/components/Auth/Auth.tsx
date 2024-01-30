@@ -1,18 +1,38 @@
 import { useState } from 'react'
 
 import { useAuth } from 'src/auth'
+import useAbortController from 'src/hooks/useAbortController'
 
 const Auth = () => {
   const { logIn } = useAuth()
   const [loading, setLoading] = useState(false)
   const [email, setEmail] = useState('')
 
+  // const handleLogin = async (email) => {
+  //   // alert('this')
+  //   try {
+  //     setLoading(true)
+  //     const { error } = await logIn({ email, authMethod: 'otp' })
+  //     if (error) throw error
+  //     alert('Check your email for the login link!')
+  //   } catch (error) {
+  //     alert(error.error_description || error.message)
+  //   } finally {
+  //     setLoading(false)
+  //   }
+  // }
+
   const handleLogin = async (email) => {
-    // alert('this')
     try {
       setLoading(true)
-      const { error } = await logIn({ email, authMethod: 'otp' })
+
+      const { result, error } = await useAbortController(
+        () => logIn({ email, authMethod: 'otp' }),
+        10
+      )
+
       if (error) throw error
+
       alert('Check your email for the login link!')
     } catch (error) {
       alert(error.error_description || error.message)

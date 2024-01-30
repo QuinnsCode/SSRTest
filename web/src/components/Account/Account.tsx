@@ -1,8 +1,5 @@
 import { useState, useEffect } from 'react'
 
-import { navigate } from '@redwoodjs/router'
-import { routes } from '@redwoodjs/router'
-
 import { useAuth } from 'src/auth'
 import { useAuthId } from 'src/contexts/AuthIdProvider'
 
