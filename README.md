@@ -90,9 +90,11 @@ yarn rw serve web
 or
 ```
 yarn rw serve api
-``` for the api side
+```
+for the api side
 
-Use that instead of the defaults so do not use yarn rw deploy render pr follow the normal Docs
+
+Use that instead of the defaults so do not use yarn rw deploy render
 
 In redwood.toml update the apiUrl to be what your api side url will be in render
 At the time of writing it is the {PROJECT_SERVICE_NAME}.onrender.com
