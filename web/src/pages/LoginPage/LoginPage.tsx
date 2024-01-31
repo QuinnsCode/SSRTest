@@ -50,7 +50,7 @@ const LoginPage = () => {
     //   authMethod: 'password',
     // })
 
-    const loginResponse = await createAbortablePromise(
+    const response = await createAbortablePromise(
       logIn({
         email: data.username,
         password: data.password,
@@ -59,15 +59,14 @@ const LoginPage = () => {
       3000
     )
 
-    const user = loginResponse.data.user
-
-    console.log('Hi there', { loginResponse })
-
-    if (user) {
-      // alert(JSON.stringify(updateId))
-      showToast('Logged in!', 'success')
-      updateID(user)
-      navigate(routes.home())
+    if (response.data) {
+      if (response.data.user) {
+        const updateId = response.data.user
+        alert(JSON.stringify(updateId))
+        showToast('Logged in!', 'success')
+        updateID(updateId)
+        navigate(routes.home())
+      }
     }
   }
 

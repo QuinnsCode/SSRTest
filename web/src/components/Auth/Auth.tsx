@@ -30,7 +30,7 @@ const Auth = () => {
       setLoading(true)
       const abortablePromise = createAbortablePromise(
         logIn({ email, authMethod: 'otp' }),
-        3000
+        5000
       )
 
       await abortablePromise

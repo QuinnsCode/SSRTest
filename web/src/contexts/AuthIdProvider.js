@@ -1,7 +1,7 @@
 // toast-provider.js
 import React, { createContext, useContext, useEffect, useState } from 'react'
 
-import { toast, Toaster } from '@redwoodjs/web/dist/toast'
+import { Toaster } from '@redwoodjs/web/dist/toast'
 
 const AuthIdContext = createContext()
 
