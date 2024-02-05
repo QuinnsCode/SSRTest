@@ -24,11 +24,62 @@ const LoginPage = () => {
   const { showToast } = useToast()
   const usernameRef = useRef<HTMLInputElement>(null)
 
+  //wrapper to make all promises an abort controller of input milliseconds
   const { createAbortablePromise } = useAbortController()
+
+  const onSubmit = async (data: Record<string, string>) => {
+    // console.log(data.username, data.password, { data })
+
+    // const response = await logIn({
+    //   email: data.username,
+    //   password: data.password,
+    //   authMethod: 'password',
+    // })
+
+    const doLogin = async () => {
+      //wait three second to abort after logging in
+      const ret = createAbortablePromise(
+        logIn({
+          email: data.username,
+          password: data.password,
+          authMethod: 'password',
+        }),
+        3000
+      )
+      return ret
+    }
+
+    const response = await doLogin()
+
+    if (!response) return
+    if (response.error) {
+      showToast('Failed login, ' + response.error.message, 'error')
+      return
+    }
+    if (response.data) {
+      if (response.data.user) {
+        const updateId = response.data.user
+        // alert(JSON.stringify(updateId))
+        showToast('Logged in!', 'success')
+        updateID(updateId)
+        navigate(routes.home())
+      }
+    }
+  }
 
   useEffect(() => {
     usernameRef.current?.focus()
-  }, [])
+    if (isAuthenticated) {
+      if (confirm('Already logged in, continue session?')) {
+        navigate(routes.home())
+      }
+    }
+  }, [isAuthenticated])
+
+  // const response = await signUp({
+  //   email: data.username,
+  //   password: data.password,
+  // })
 
   // useEffect(() => {
 
@@ -40,35 +91,6 @@ const LoginPage = () => {
 
   //   }
   // }, [isAuthenticated])
-
-  const onSubmit = async (data: Record<string, string>) => {
-    // console.log(data.username, data.password, { data })
-
-    // const response = await logIn({
-    //   email: data.username,
-    //   password: data.password,
-    //   authMethod: 'password',
-    // })
-
-    const response = await createAbortablePromise(
-      logIn({
-        email: data.username,
-        password: data.password,
-        authMethod: 'password',
-      }),
-      3000
-    )
-
-    if (response.data) {
-      if (response.data.user) {
-        const updateId = response.data.user
-        alert(JSON.stringify(updateId))
-        showToast('Logged in!', 'success')
-        updateID(updateId)
-        navigate(routes.home())
-      }
-    }
-  }
 
   return (
     <>

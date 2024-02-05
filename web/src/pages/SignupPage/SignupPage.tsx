@@ -11,16 +11,16 @@ import {
 } from '@redwoodjs/forms'
 import { Link, navigate, routes } from '@redwoodjs/router'
 import { Metadata } from '@redwoodjs/web'
-import { toast } from '@redwoodjs/web/dist/toast'
 
 import { useAuth } from 'src/auth'
+import { useAuthId } from 'src/contexts/AuthIdProvider'
 import { useToast } from 'src/contexts/ToastProvider'
 import useAbortController from 'src/hooks/useAbortController'
 
 const SignupPage = () => {
   const { createAbortablePromise } = useAbortController()
   const { client: supabase, isAuthenticated, signUp, logIn } = useAuth()
-
+  const { updateID } = useAuthId()
   const { showToast, hideToast } = useToast()
   const usernameRef = useRef<HTMLInputElement>(null)
 
@@ -29,10 +29,13 @@ const SignupPage = () => {
 
   useEffect(() => {
     usernameRef.current?.focus()
-  }, [])
+  }, [isAuthenticated])
 
   useEffect(() => {
     if (isAuthenticated) {
+      if (confirm('Already logged in, continue session?')) {
+        navigate(routes.home())
+      }
       if (isWaitingForEmailConfirmation) {
         showToast('Successfully logged in 2!', 'success')
         setTimeout(() => {
@@ -65,40 +68,51 @@ const SignupPage = () => {
 
   const onSubmit = async (data: Record<string, string>) => {
     // console.log(data.username, data.password, { data })
-    try {
-      const response = await logIn({
-        email: data.username,
-        password: data.password,
-        authMethod: 'password',
-      })
-      if (response.data) {
-        if (response.data.user) {
-          showToast('Found account!', 'success')
-          navigate(routes.home())
-        } else {
-          try {
-            const response = await signUp({
-              email: data.username,
-              password: data.password,
-            })
-            setIsWaitingForEmailConfirmation(true)
-          } catch (e) {
-            console.log('error2')
-          }
-        }
-      } else {
-        try {
-          const response = await signUp({
-            email: data.username,
-            password: data.password,
-          })
-          setIsWaitingForEmailConfirmation(true)
-        } catch (e) {
-          console.log('error3')
-        }
-      }
-    } catch (e) {
-      console.log('error1')
+
+    // const response = await logIn({
+    //   email: data.username,
+    //   password: data.password,
+    //   authMethod: 'password',
+    // })
+
+    const doSignUp = async () => {
+      //wait three second to abort after logging in
+      const ret = createAbortablePromise(
+        signUp({
+          email: data.username,
+          password: data.password,
+        }),
+        3000
+      )
+      return ret
+    }
+
+    const response = await doSignUp()
+    setIsWaitingForEmailConfirmation(true)
+    if (!response) return
+    if (response.error) {
+      showToast(
+        'ERROR:' +
+          response.error.message +
+          '\nTry checking your email for confirmation!'
+      )
+      return
+    }
+    //responded
+    if (!response.data) return
+    if (!response.data.user) return
+    if (response.data.user) {
+      const updateId = response.data.user
+      updateID(updateId)
+    }
+
+    //might want to update parts of user in future for now just alert
+    // const updateId = response.data.user
+    // showToast('Logged in!', 'success')
+    // updateID(updateId)
+    // navigate(routes.home())
+    if (response.data.user.confirmation_sent_at) {
+      showToast('Confirmation Email Sent!')
     }
   }
 

@@ -38,6 +38,6 @@ services:
     ipAllowList:
     - source: 0.0.0.0/0 #I wasn't able to get this work using just the internal connection
       description: public
-databases:
-  - name: SSRTest-db
-    region: oregon
+# databases:
+#   - name: SSRTest-db
+#     region: oregon

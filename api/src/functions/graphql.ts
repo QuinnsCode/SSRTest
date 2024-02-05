@@ -26,16 +26,16 @@ export const handler = createGraphQLHandler({
   },
   extraPlugins: [
     // this here needs to be added for the redis cache
-    // useResponseCache({
-    //   cache: createRedisCache({ redis }),
-    //   ttl: 0,
-    //   includeExtensionMetadata: true,
-    //   ttlPerSchemaCoordinate: {
-    //     'Query.PublicFeeds': 1000 * 60 * 5,
-    //     'Query.searchPublicItems': 1000 * 60 * 5,
-    //   },
-    //   session: null,
-    // }),
+    useResponseCache({
+      cache: createRedisCache({ redis }),
+      ttl: 3000,
+      includeExtensionMetadata: true,
+      ttlPerSchemaCoordinate: {
+        'Query.PublicFeeds': 1000 * 60 * 5,
+        'Query.searchPublicItems': 1000 * 60 * 5,
+      },
+      session: () => null,
+    }),
   ],
   onException: () => {
     // Disconnect from your database with an unhandled exception.
