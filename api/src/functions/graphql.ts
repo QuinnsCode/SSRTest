@@ -20,10 +20,10 @@ export const handler = createGraphQLHandler({
   directives,
   sdls,
   services,
-  cors: {
-    origin: 'https://ssrtest-web-server.onrender.com',
-    credentials: true,
-  },
+  // cors: {
+  //   origin: 'https://ssrtest-web-server.onrender.com',
+  //   credentials: true,
+  // },
   extraPlugins: [
     // this here needs to be added for the redis cache
     useResponseCache({

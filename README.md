@@ -11,7 +11,7 @@ yarn -v //check yarn version and installation
 ```
 Redwood is currently v6.6 so let's create the app:
 ```
-yarn create redwood-app use-you-own-darn-name
+yarn create redwood-app use-you-own-darn-name --typescript
 ```
 For now SSR is experimental so ugrade to v7.x (I used 7.0.0-canary.886+12a400a5f as of Jan 2024):
 ```

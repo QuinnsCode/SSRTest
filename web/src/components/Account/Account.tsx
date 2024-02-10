@@ -4,7 +4,7 @@ import { useAuth } from 'src/auth'
 import { useAuthId } from 'src/contexts/AuthIdProvider'
 
 const Account = () => {
-  const { client: supabase, currentUser, logOut, isAuthenticated } = useAuth()
+  const { client: supabase, currentUser, logOut } = useAuth()
   const [loading, setLoading] = useState(true)
   const [username, setUsername] = useState(null)
   const [website, setWebsite] = useState(null)
@@ -14,8 +14,6 @@ const Account = () => {
   useEffect(() => {
     getProfile()
   }, [supabase.auth.session])
-
-  useEffect(() => {}, [isAuthenticated])
 
   async function getProfile() {
     try {

@@ -19,8 +19,8 @@ import { useToast } from 'src/contexts/ToastProvider'
 import useAbortController from 'src/hooks/useAbortController'
 
 const LoginPage = () => {
-  const { client: supabase, isAuthenticated, currentUser, logIn } = useAuth()
-  const { updateID } = useAuthId()
+  const { logIn } = useAuth()
+  const { id, updateID } = useAuthId()
   const { showToast } = useToast()
   const usernameRef = useRef<HTMLInputElement>(null)
 
@@ -51,6 +51,8 @@ const LoginPage = () => {
 
     const response = await doLogin()
 
+    // alert(JSON.stringify(response))
+
     if (!response) return
     if (response.error) {
       showToast('Failed login, ' + response.error.message, 'error')
@@ -69,12 +71,13 @@ const LoginPage = () => {
 
   useEffect(() => {
     usernameRef.current?.focus()
-    if (isAuthenticated) {
-      if (confirm('Already logged in, continue session?')) {
-        navigate(routes.home())
-      }
-    }
-  }, [isAuthenticated])
+    // if (isAuthenticated) {
+    //   if (confirm('Already logged in, continue session?')) {
+    //     navigate(routes.home())
+    //   }
+    // }
+    // }, [isAuthenticated])
+  }, [])
 
   // const response = await signUp({
   //   email: data.username,
@@ -91,6 +94,14 @@ const LoginPage = () => {
 
   //   }
   // }, [isAuthenticated])
+
+  useEffect(() => {
+    if (id) {
+      if (confirm('Already logged in, continue session?')) {
+        navigate(routes.home())
+      }
+    }
+  }, [id])
 
   return (
     <>

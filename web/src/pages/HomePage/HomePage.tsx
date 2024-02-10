@@ -4,10 +4,18 @@ import { useAuth } from 'src/auth'
 import Account from 'src/components/Account/Account'
 import Auth from 'src/components/Auth/Auth'
 import Lobby from 'src/components/Lobby/Lobby'
+import { useAuthId } from 'src/contexts/AuthIdProvider'
 // import { useAuthId } from 'src/contexts/AuthIdProvider'
 
 const HomePage = () => {
-  const { isAuthenticated } = useAuth()
+  // const { isAuthenticated } = useAuth()
+
+  const { id } = useAuthId()
+  console.log({ id })
+  const isAuthenticated = id
+
+  // const isAuthenticated =
+
   // console.log(supabase.session)
   // const { hasID } = useAuthId()
   // cats

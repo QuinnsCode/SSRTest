@@ -19,8 +19,8 @@ import useAbortController from 'src/hooks/useAbortController'
 
 const SignupPage = () => {
   const { createAbortablePromise } = useAbortController()
-  const { client: supabase, isAuthenticated, signUp, logIn } = useAuth()
-  const { updateID } = useAuthId()
+  const { client: supabase, isAuthenticated, signUp } = useAuth()
+  const { id, updateID } = useAuthId()
   const { showToast, hideToast } = useToast()
   const usernameRef = useRef<HTMLInputElement>(null)
 
@@ -28,11 +28,13 @@ const SignupPage = () => {
     useState(false)
 
   useEffect(() => {
-    usernameRef.current?.focus()
-  }, [isAuthenticated])
+    if (id) {
+      usernameRef.current?.focus()
+    }
+  }, [id])
 
   useEffect(() => {
-    if (isAuthenticated) {
+    if (id) {
       if (confirm('Already logged in, continue session?')) {
         navigate(routes.home())
       }
@@ -94,7 +96,7 @@ const SignupPage = () => {
       showToast(
         'ERROR:' +
           response.error.message +
-          '\nTry checking your email for confirmation!'
+          '\nCheck your email for confirmation!'
       )
       return
     }

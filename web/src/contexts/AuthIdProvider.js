@@ -21,6 +21,7 @@ const AuthIdProvider = ({ children }) => {
   }
 
   useEffect(() => {
+    console.log('id was: ' + JSON.stringify(id))
     setTimeout(deleteID, 10)
   }, [])
 
